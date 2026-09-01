@@ -7,12 +7,16 @@ function ChatWindow({ activeChat, messages, onSendMessage, currentUser, onMenuCl
   const inputRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    // Small delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      scrollToBottom();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [messages, activeChat]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
